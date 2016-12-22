@@ -5,12 +5,13 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "./Libft/libft.h"
+#include "./Libft/includes/libft.h"
 
 typedef struct          a_list
 {
     int                 file;
-    int                 pos;
+    int                 ret;
+    char                *extra;
     struct a_list       *next;
 }                       b_list;
 

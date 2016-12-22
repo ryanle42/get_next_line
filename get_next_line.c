@@ -4,85 +4,115 @@
 #include <unistd.h>
 #include <stdio.h>
 
+/*
 b_list      *make_head(b_list *head)
 {   
-    if (head == NULL)
+    if (!head)
     {
         head = (b_list *)malloc(sizeof(b_list));
-        head->pos = 0;
-        head->file = 0;
+        head->file = -1;
+        head->extra = "\0";
         head->next = NULL;
     }
     return (head);
 }
+*/
+b_list     *find_make_node(b_list *head, const int fd)
+{
+    b_list *current;
 
-char        *buff_it(const int fd, b_list *current)
+    if (!head)
+    {
+        head = (b_list *)malloc(sizeof(b_list));
+        head->file = -1;
+        head->extra = "\0";
+        head->next = NULL;
+        return (head);
+    }
+    current = head;
+    while (current->next)
+    {
+        current = current->next;
+        if (current->file == fd)
+            return (current);
+    }
+    current->next = (b_list *)malloc(sizeof(b_list));
+    current = current->next;
+    current->file = fd;
+    current->extra = "\0";
+    current->next = NULL;
+    return (current);
+}
+
+int         check_newline(b_list *current, char **total)
+{
+    int i;
+
+    i = 0;
+    if (!current->extra[i])
+    {
+        (*total)[i] = '\0';
+        return (0);
+    }
+    while (current->extra[i])
+    {
+        if (current->extra[i] == '\n')
+        {
+            (*total)[i] = '\0';
+            i++;
+            current->extra = ft_copystr(current->extra + i);
+            return (1); 
+        }
+        (*total)[i] = current->extra[i];
+        i++;
+    }
+    (*total)[i] = '\0';
+    return (0);
+}
+
+char        *buff_it(const int fd, b_list *current, char *str)
 {
     char *buffer;
     char *total;
     char *cpy;
-    int nl;
+    int t;
     int i;
 
-    nl = 0;
-    buffer = (char *)malloc(sizeof(char) * current->pos);
-    total = NULL;
-    read(fd, buffer, -5);
-    while (!nl)
+    t = 1000;
+    total = (char *)malloc(sizeof(char) * ft_strlen(current->extra) + 1);
+    if (!(check_newline(current, &total))) // Set to stored bytes
     {
-        i = 0;
-        cpy = (char *)malloc(sizeof(char) * BUFF_SIZE + 1);
-        buffer = (char *)malloc(sizeof(char) * BUFF_SIZE + 1);
-        read(fd, buffer, BUFF_SIZE);
-        while (buffer[i])
+        while (buffer[i] != '\n' && buffer[i])                         // Keep reading until hit new line
         {
-            if (buffer[i] == '\n')
+            i = 0;
+            cpy = (char *)malloc(sizeof(char) * BUFF_SIZE + 1);
+            buffer = (char *)malloc(sizeof(char) * BUFF_SIZE + 1);
+            current->ret = read(fd, buffer, BUFF_SIZE);
+            while (buffer[i] && buffer[i] != '\n')
             {
-                nl = 1;
-                break;
+                cpy[i] = buffer[i];
+                i++;
             }
-            cpy[i] = buffer[i];
-            i++;
+            total = ft_str_append(total, cpy);
         }
-        if (!total)
-            total = cpy;
-        else
-            total = ft_strjoin(total, cpy);
-        printf("buff: %s\n", total);
-        current->pos += i;
-        if (i < BUFF_SIZE)
-            return (total);
+        current->extra = ft_copystr(buffer + i + 1); // Store bytes if read over newline
     }
     return (total);
-}
-
-b_list      *get_node(b_list **head, const int fd)
-{
-    b_list *current;
-
-    current = *head;
-    while (current)
-    {
-        if (current->file == fd)
-            return (current);
-        current = current->next;
-    }
-    current = (b_list *)malloc(sizeof(b_list));
-    current->file = fd;
-    current->pos = 0;
-    current->next = NULL;
-    return (current);
 }
 
 int get_next_line(const int fd, char **line)
 {
     static b_list *head;
     b_list *current;
+    char *str;
 
-    head = make_head(head);
-    current = get_node(&head, fd);
-    *line = buff_it(fd, current);
-    return (1);
+    if (!head)
+        head = find_make_node(head, fd);                // Make head node if necessary
+    current = find_make_node(head, fd);                 // Find or make node for file
+    *line = buff_it(fd, current, str);                  // Read file and store result
+    if (current->ret > 0)
+        return (1);
+    return (current->ret);
 }
 
 int main()
@@ -98,8 +128,12 @@ int main()
 
     get_next_line(fd, &ptr);
     printf("%s\n", ptr);
-    
-    /*fd2 = open("file2", O_RDONLY);
+    get_next_line(fd, &ptr);
+    printf("%s\n", ptr);    
+    get_next_line(fd, &ptr);    
+    printf("%s\n", ptr);
+ /*   
+    fd2 = open("file2", O_RDONLY);
     
     get_next_line(fd2, &ptr);
     printf("%s\n", ptr);
@@ -108,6 +142,6 @@ int main()
     printf("%s\n", ptr);
     
     get_next_line(fd, &ptr);
-    printf("%s\n", ptr);
-    */return (1);
+    printf("%s\n", ptr);*/
+    return (1);
 }
