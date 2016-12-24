@@ -1,35 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/11/28 13:59:40 by rle               #+#    #+#             */
+/*   Updated: 2016/12/02 11:42:49 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+int		ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	size_t	i;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	while (i < n)
+	{
+		if (*(const unsigned char *)s1 - *(const unsigned char *)s2)
+			return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
+		s1++;
+		s2++;
+		i++;
+	}
+	return (0);
+}

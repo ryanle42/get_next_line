@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/11/29 18:53:23 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 17:50:43 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+static void		ft_new(int n, int fd)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	write(fd, &n, 1);
+}
 
-int						get_next_line(const int fd, char **line);
+static int		ft_putnum(long n, int fd)
+{
+	if (n < 0)
+	{
+		ft_new('-', fd);
+		n *= -1;
+	}
+	if (n >= 10)
+	{
+		ft_putnum(n / 10, fd);
+		ft_putnum(n % 10, fd);
+	}
+	else
+		ft_new(n + '0', fd);
+	return (0);
+}
 
-#endif
+void			ft_putnbr_fd(int n, int fd)
+{
+	ft_putnum(n, fd);
+}

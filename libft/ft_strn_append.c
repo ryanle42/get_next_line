@@ -1,35 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strn_append.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/12/22 16:36:08 by rle               #+#    #+#             */
+/*   Updated: 2016/12/22 16:37:47 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+char	*ft_strn_append(char *s1, char *s2, int n)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	int		length;
+	int		i;
+	int		j;
+	char	*out;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	length = ft_strlen(s1) + n;
+	if (!(out = (char *)malloc(sizeof(char) * length + 1)))
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+	{
+		out[j] = s1[i];
+		i++;
+		j++;
+	}
+	i = 0;
+	while (i < n)
+	{
+		out[j] = s2[i];
+		i++;
+		j++;
+	}
+	out[j] = '\0';
+	return (out);
+}

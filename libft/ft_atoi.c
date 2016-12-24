@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/11/28 09:28:24 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 19:11:53 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+int	ft_atoi(char *str)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	int p;
+	int nbr;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	while (*str == 32 || (*str >= 9 && *str <= 13))
+		str++;
+	p = 1;
+	if (*str == '+' || *str == '-')
+	{
+		if (*str == '-')
+			p = 0;
+		str++;
+	}
+	nbr = 0;
+	while (*str >= '0' && *str <= '9')
+	{
+		nbr = (nbr * 10) + (*str - '0');
+		str++;
+	}
+	return (p ? nbr : -nbr);
+}

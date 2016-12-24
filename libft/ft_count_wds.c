@@ -1,35 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_count_wds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/12/05 19:04:27 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 19:10:49 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+int	ft_count_wds(char const *s, char c)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	int	i;
+	int	j;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	j = 0;
+	if (s[0] != c)
+		j++;
+	while (s[i + 1])
+	{
+		if ((s[i] == c) && (s[i + 1] != c))
+			j++;
+		i++;
+	}
+	return (j);
+}

@@ -1,35 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/11/28 19:46:23 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 17:18:09 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	int		i;
+	int		j;
+	char	*str;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	while (s1[i])
+		i++;
+	while (s2[j])
+		j++;
+	if (!(str = (char *)malloc(sizeof(char) * (i + j) + 1)))
+		return (NULL);
+	i = -1;
+	while (s1[++i])
+		str[i] = s1[i];
+	j = -1;
+	while (s2[++j])
+	{
+		str[i] = s2[j];
+		i++;
+	}
+	str[i] = '\0';
+	return (str);
+}

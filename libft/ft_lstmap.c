@@ -1,35 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/12/04 16:30:38 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 14:53:28 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+t_list	*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem))
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	t_list *head;
+	t_list *current;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	head = NULL;
+	if (!lst)
+		return (NULL);
+	if (lst)
+	{
+		if (!(head = (t_list *)malloc(sizeof(t_list))))
+			return (NULL);
+		head = f(lst);
+	}
+	lst = lst->next;
+	current = head;
+	while (lst)
+	{
+		current->next = f(lst);
+		current = current->next;
+		lst = lst->next;
+	}
+	return (head);
+}

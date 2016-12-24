@@ -1,35 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/11/28 11:13:10 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 17:41:40 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	size_t	i;
+	size_t	j;
+	size_t	k;
+	char	*out;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	out = (char *)big;
+	i = 0;
+	if (!(little[0]))
+		return (out);
+	while (out[i] && (i < len))
+	{
+		j = 0;
+		k = i;
+		while (out[k] == little[j] && out[k] && (k < len))
+		{
+			k++;
+			j++;
+		}
+		if (!little[j])
+			return (&out[k - j]);
+		i++;
+	}
+	return (NULL);
+}

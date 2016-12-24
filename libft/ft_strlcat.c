@@ -1,35 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/11/29 13:24:15 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 17:06:22 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+size_t	ft_strlcat(char *dst, const char *src, size_t size)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	char		*d;
+	const char	*s;
+	size_t		i;
+	size_t		len;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	d = dst;
+	s = src;
+	i = size;
+	while (i-- != 0 && *d != '\0')
+		d++;
+	len = d - dst;
+	i = size - len;
+	if (i == 0)
+		return (len + ft_strlen(s));
+	while (*s != '\0')
+	{
+		if (i != 1)
+		{
+			*d++ = *s;
+			i--;
+		}
+		s++;
+	}
+	*d = '\0';
+	return (len + (s - src));
+}

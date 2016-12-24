@@ -1,35 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/12/22 17:19:28 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 17:23:37 by rle              ###   ########.fr       */
+/*   Created: 2016/11/28 11:50:54 by rle               #+#    #+#             */
+/*   Updated: 2016/12/05 18:05:31 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE 1
-
-# include <stdlib.h>
-# include <sys/stat.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <libft.h>
-
-typedef struct			s_file
+char	*ft_strcat(const char *s1, const char *s2)
 {
-	int					file;
-	int					ret;
-	char				*extra;
-	struct s_file		*next;
-}						t_file;
+	int		i;
+	int		j;
+	char	*s3;
+	char	*s4;
 
-int						get_next_line(const int fd, char **line);
-
-#endif
+	s3 = (char*)s1;
+	s4 = (char*)s2;
+	i = 0;
+	j = 0;
+	while (s3[i])
+		i++;
+	while (s4[j])
+	{
+		s3[i] = s4[j];
+		i++;
+		j++;
+	}
+	s3[i] = '\0';
+	return (s3);
+}
