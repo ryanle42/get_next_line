@@ -6,7 +6,7 @@
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/22 13:30:02 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 13:43:06 by rle              ###   ########.fr       */
+/*   Updated: 2016/12/27 15:21:18 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_file		*find_make_node(t_file *head, const int fd)
 	}
 	current->next = (t_file *)malloc(sizeof(t_file));
 	current->next->file = fd;
-	current->next->extra = "\0";
+	current->next->extra = (char *)malloc(sizeof(char) * 1);
+	(current->next->extra)[0] = '\0';
 	current->next->ret = 1;
 	current->next->next = NULL;
 	return (current->next);
@@ -36,21 +37,23 @@ int			check_extra(t_file *current, char **total, int *first)
 	int i;
 
 	i = 0;
-	if (!current->extra[i])
+	if (!((current->extra)[i]))
 	{
 		(*total)[i] = '\0';
+		if (current->ret == 0)
+			return (1);
 		return (0);
 	}
-	while (current->extra[i])
+	while ((current->extra)[i])
 	{
-		if (current->extra[i] == '\n')
+		if ((current->extra)[i] == '\n')
 		{
 			(*total)[i] = '\0';
 			i++;
 			current->extra = ft_copystr(current->extra + i);
 			return (1);
 		}
-		(*total)[i] = current->extra[i];
+		(*total)[i] = (current->extra)[i];
 		i++;
 	}
 	(*total)[i] = '\0';
@@ -64,16 +67,15 @@ char		*buff_it(const int fd, t_file *current, int *first, int nl)
 	char	*total;
 	int		i;
 
-	total = (char *)malloc(sizeof(char) * ft_strlen(current->extra) + 1);
+	total = ft_strnew(ft_strlen(current->extra));
 	if (!(check_extra(current, &total, &(*first))))
 	{
 		while (!nl && current->ret != 0)
 		{
 			i = 0;
-			buffer = (char *)malloc(sizeof(char) * BUFF_SIZE + 1);
+			buffer = ft_strnew(BUFF_SIZE);
 			if ((current->ret = read(fd, buffer, BUFF_SIZE)) < 0)
 				return (NULL);
-			buffer[BUFF_SIZE] = '\0';
 			((*first) == 1 && current->ret == 0) ? (*first--) : (*first = 2);
 			while (buffer[i] && !nl)
 				(buffer[i] == '\n') ? (nl = 1) : (i++);
@@ -104,5 +106,5 @@ int			get_next_line(const int fd, char **line)
 		return (-1);
 	if (current->ret > 0 || first == 2)
 		return (1);
-	return (current->ret);
+	return (0);
 }

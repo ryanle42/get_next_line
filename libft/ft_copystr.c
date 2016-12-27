@@ -6,7 +6,7 @@
 /*   By: rle <marvin@42.fr>                         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/12/22 16:34:40 by rle               #+#    #+#             */
-/*   Updated: 2016/12/22 16:35:04 by rle              ###   ########.fr       */
+/*   Updated: 2016/12/27 15:20:05 by rle              ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,15 @@ char	*ft_copystr(char *str)
 {
 	char	*copy;
 	int		i;
+	int		len;
 
-	i = 0;
-	while (str[i])
-		i++;
-	copy = (char *)malloc(sizeof(char) * i + 1);
+	len = ft_strlen(str);
+	copy = ft_strnew(len);
 	i = 0;
 	while (str[i])
 	{
 		copy[i] = str[i];
 		i++;
 	}
-	copy[i] = '\0';
 	return (copy);
 }
