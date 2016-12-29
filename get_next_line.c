@@ -40,8 +40,6 @@ int			check_extra(t_file *current, char **total, int *first)
 	if (!((current->extra)[i]))
 	{
 		(*total)[i] = '\0';
-		if (current->ret == 0)
-			return (1);
 		return (0);
 	}
 	while ((current->extra)[i])
@@ -63,7 +61,7 @@ int			check_extra(t_file *current, char **total, int *first)
 
 char		*buff_it(const int fd, t_file *current, int *first, int nl)
 {
-	char	*buffer;
+	char	buffer[BUFF_SIZE + 1];
 	char	*total;
 	int		i;
 
@@ -73,9 +71,9 @@ char		*buff_it(const int fd, t_file *current, int *first, int nl)
 		while (!nl && current->ret != 0)
 		{
 			i = 0;
-			buffer = ft_strnew(BUFF_SIZE);
 			if ((current->ret = read(fd, buffer, BUFF_SIZE)) < 0)
 				return (NULL);
+            buffer[current->ret] = '\0';
 			((*first) == 1 && current->ret == 0) ? (*first--) : (*first = 2);
 			while (buffer[i] && !nl)
 				(buffer[i] == '\n') ? (nl = 1) : (i++);

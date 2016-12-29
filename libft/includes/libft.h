@@ -89,5 +89,6 @@ int					ft_wd_len(char const *s, char c, int j);
 int					ft_int_length(int n);
 char				*ft_strn_append(char *s1, char *s2, int n);
 char				*ft_copystr(char *str);
+char                *ft_realloc(char *str, int n);
 
 #endif
