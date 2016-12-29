@@ -71,14 +71,15 @@ char		*buff_it(const int fd, t_file *current, int *first, int nl)
 		while (!nl && current->ret != 0)
 		{
 			i = 0;
+			ft_memset(buffer, '\0', BUFF_SIZE);
 			if ((current->ret = read(fd, buffer, BUFF_SIZE)) < 0)
 				return (NULL);
-            buffer[current->ret] = '\0';
 			((*first) == 1 && current->ret == 0) ? (*first--) : (*first = 2);
 			while (buffer[i] && !nl)
 				(buffer[i] == '\n') ? (nl = 1) : (i++);
 			total = ft_strn_append(total, buffer, i);
 		}
+		free(current->extra);
 		current->extra = ft_copystr(buffer + i + 1);
 	}
 	return (total);
