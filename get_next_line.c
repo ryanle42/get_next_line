@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 #include "get_next_line.h"
 
 t_file		*find_make_node(t_file *head, const int fd)
@@ -40,6 +41,8 @@ int			check_extra(t_file *current, char **total, int *first)
 	if (!((current->extra)[i]))
 	{
 		(*total)[i] = '\0';
+		if (current->ret == 0)
+			return (1);
 		return (0);
 	}
 	while ((current->extra)[i])
@@ -71,7 +74,7 @@ char		*buff_it(const int fd, t_file *current, int *first, int nl)
 		while (!nl && current->ret != 0)
 		{
 			i = 0;
-			ft_memset(buffer, '\0', BUFF_SIZE);
+			ft_memset(buffer, '\0', BUFF_SIZE + 1);
 			if ((current->ret = read(fd, buffer, BUFF_SIZE)) < 0)
 				return (NULL);
 			((*first) == 1 && current->ret == 0) ? (*first--) : (*first = 2);
